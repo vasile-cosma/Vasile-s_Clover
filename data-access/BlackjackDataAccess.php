@@ -27,7 +27,8 @@ class BlackjackDataAccess
                                                             username TEXT,
                                                             first_name TEXT,
                                                             last_name TEXT,
-                                                            birth_date TEXT)");
+                                                            birth_date TEXT,
+                                                            balance INTEGER)");
 
         // Crear tabla de usuarios
         $this->pdo->exec("CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -80,11 +81,11 @@ class BlackjackDataAccess
 
     private function createInitialUsers(): void
     {
-        $this->pdo->exec("INSERT INTO users (email, password, username, first_name, last_name, birth_date) VALUES 
-                                                ('vasile.cosma@example.com', '" . password_hash('password123', PASSWORD_DEFAULT) . "', 'PaniK', 'Vasile', 'Cosma', '2001-07-30'),
-                                                ('omar.fernandez@example.com', '" . password_hash('pass456', PASSWORD_DEFAULT) . "', 'ElPrimo', 'Omar', 'Fernandez', '2001-01-25'),
-                                                ('izar.leonel@example.com', '" . password_hash('abc789', PASSWORD_DEFAULT) . "', 'Pescaito98', 'Izar', 'Leonel', '1998-02-02'),
-                                                ('yuiht.fernandez@example.com', '" . password_hash('yuiht321', PASSWORD_DEFAULT) . "', 'yuiht', 'Yuiht', 'Fernandez', '1998-08-23')");
+        $this->pdo->exec("INSERT INTO users (email, password, username, first_name, last_name, birth_date, balance) VALUES 
+                                                ('vasile.cosma@example.com', '" . password_hash('password123', PASSWORD_DEFAULT) . "', 'PaniK', 'Vasile', 'Cosma', '2001-07-30', 2700),
+                                                ('omar.fernandez@example.com', '" . password_hash('pass456', PASSWORD_DEFAULT) . "', 'ElPrimo', 'Omar', 'Fernandez', '2001-01-25', 3000),
+                                                ('izar.leonel@example.com', '" . password_hash('abc789', PASSWORD_DEFAULT) . "', 'Pescaito98', 'Izar', 'Leonel', '1998-02-02', 7800),
+                                                ('yuiht.fernandez@example.com', '" . password_hash('yuiht321', PASSWORD_DEFAULT) . "', 'yuiht', 'Yuiht', 'Fernandez', '1998-08-23', 600)");
     }
 
     private function createInitialScores(): void
@@ -126,6 +127,7 @@ class BlackjackDataAccess
                 $result['first_name'],
                 $result['last_name'],
                 $result['birth_date'],
+                $result['balance'],
                 $result['id']
             );
             return $user;
@@ -150,6 +152,30 @@ class BlackjackDataAccess
                 $result['first_name'],
                 $result['last_name'],
                 $result['birth_date'],
+                $result['balance'],
+                $result['id']
+            );
+            return $user;
+        } else {
+            return null; // Retorna null si no se encuentra el usuario
+        }
+    }
+
+    public function getUserByUsername(string $username): ?User
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt->execute([':username' => $username]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            $user = new User(
+                $result['email'],
+                $result['password'],
+                $result['username'],
+                $result['first_name'],
+                $result['last_name'],
+                $result['birth_date'],
+                $result['balance'],
                 $result['id']
             );
             return $user;
@@ -173,6 +199,7 @@ class BlackjackDataAccess
                 $row['first_name'],
                 $row['last_name'],
                 $row['birth_date'],
+                $row['balance'],
                 $row['id']
             );
             // Añadir usuario al array. Se podría hacer con array_push también.
@@ -185,8 +212,8 @@ class BlackjackDataAccess
     // Crear un usuario. El atributo id se ignora, porque la BD lo asigna automáticamente
     public function createUser(User $user): bool
     {
-        $stmt = $this->pdo->prepare("INSERT INTO users (email, password, username, first_name, last_name, birth_date) 
-                                        VALUES (:email, :password, :username, :first_name, :last_name, :birth_date)");
+        $stmt = $this->pdo->prepare("INSERT INTO users (email, password, username, first_name, last_name, birth_date, balance) 
+                                        VALUES (:email, :password, :username, :first_name, :last_name, :birth_date, :balance)");
 
         $stmt->bindValue(':email', $user->getEmail());
         $stmt->bindValue(':password', $user->getPassword());
@@ -194,6 +221,7 @@ class BlackjackDataAccess
         $stmt->bindValue(':first_name', $user->getFirstName());
         $stmt->bindValue(':last_name', $user->getLastName());
         $stmt->bindValue(':birth_date', $user->getBirthDate());
+        $stmt->bindValue(':balance', $user->getBalance());
 
         // Devuelve true si la sentencia se ejecuta correctamente
         return $stmt->execute();
@@ -203,7 +231,7 @@ class BlackjackDataAccess
     public function updateUser(User $user): bool
     {
         $stmt = $this->pdo->prepare("UPDATE users SET email = :email, password = :password, username = :username, first_name = :first_name, 
-                                        last_name = :last_name, birth_date = :birth_date WHERE id = :id");
+                                        last_name = :last_name, birth_date = :birth_date, balance = :balance WHERE id = :id");
 
         $stmt->bindValue(':id', $user->getId());
         $stmt->bindValue(':email', $user->getEmail());
@@ -212,6 +240,7 @@ class BlackjackDataAccess
         $stmt->bindValue(':first_name', $user->getFirstName());
         $stmt->bindValue(':last_name', $user->getLastName());
         $stmt->bindValue(':birth_date', $user->getBirthDate());
+        $stmt->bindValue(':balance', $user->getBalance());
 
         // Devuelve true si la sentencia se ejecuta correctamente
         return $stmt->execute();

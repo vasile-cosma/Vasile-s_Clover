@@ -1,4 +1,17 @@
-body {
+.bg {
     background-image: url("../images/background.jpg");
     color: aliceblue;
+}
+
+.btn:hover {
+    background-color: rgba(216, 185, 13, 0.945);
+    border: black;
+}
+
+.btn {
+    border: black;
+}
+
+.form-check-input:checked {
+    background-color: rgba(216, 185, 13, 0.945);
 }

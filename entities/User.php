@@ -8,8 +8,9 @@ class User
     private $firstName;
     private $lastName;
     private $birthDate;
+    private $balance;
 
-    public function __construct($email, $password, $username, $firstName, $lastName, $birthDate, $id = null)
+    public function __construct($email, $password, $username, $firstName, $lastName, $birthDate, $balance, $id = null)
     {
         $this->id = $id;
         $this->setEmail($email);
@@ -18,6 +19,7 @@ class User
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
         $this->setBirthDate($birthDate);
+        $this->setBalance($balance);
     }
 
     // Getters
@@ -56,6 +58,11 @@ class User
         return $this->birthDate;
     }
 
+    public function getBalance()
+    {
+        return $this->balance;
+    }
+
     // Setters
     public function setEmail($email)
     {
@@ -85,6 +92,10 @@ class User
     public function setBirthDate($birthDate)
     {
         $this->birthDate = $birthDate;
+    }
+    public function setBalance($balance)
+    {
+        $this->balance = $balance;
     }
 
 }

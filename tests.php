@@ -57,12 +57,12 @@ require_once __DIR__ . '/utils/SecUtils.php';
     echo "<h2>Todos los usuarios</h2><ul>";
     $users = $blackjackDataAccess->getAllUsers();
     foreach ($users as $user) {
-        echo "<li>ID: {$user->getId()}, Ususario: {$user->getUsername()}, Nombre: {$user->getFirstName()} {$user->getLastName()}, Email: {$user->getEmail()}</li>";
+        echo "<li>ID: {$user->getId()}, Ususario: {$user->getUsername()}, Nombre: {$user->getFirstName()} {$user->getLastName()}, Email: {$user->getEmail()}, Saldo: {$user->getBalance()}</li>";
     }
     echo "</ul>";
 
     // 2. Crear un nuevo usuario
-    $newUser = new User('new.user@example.com', password_hash('newpassword', PASSWORD_DEFAULT), 'UserNuevo', 'Nuevo', 'Usuario', '1992-01-01', 0);
+    $newUser = new User('new.user@example.com', password_hash('newpassword', PASSWORD_DEFAULT), 'UserNuevo', 'Nuevo', 'Usuario', '1992-01-01', 2500);
     $created = $blackjackDataAccess->createUser($newUser);
     echo "<h2>Crear usuario</h2>" . ($created ? "Usuario creado." : "Error al crear usuario.");
 
@@ -72,7 +72,7 @@ require_once __DIR__ . '/utils/SecUtils.php';
     echo $user ? "Usuario encontrado: {$user->getFirstName()} {$user->getLastName()}" : "Usuario no encontrado.";
 
     // 4. Actualizar un usuario
-    $userToUpdate = new User('updated.user@example.com', password_hash('updatedpassword', PASSWORD_DEFAULT), 'NuevoUser', 'Usuario', 'Actualizado', '2007-01-01', 10);
+    $userToUpdate = new User('updated.user@example.com', password_hash('updatedpassword', PASSWORD_DEFAULT), 'NuevoUser', 'Usuario', 'Actualizado', '2007-01-01', 2500);
     $updated = $blackjackDataAccess->updateUser($userToUpdate);
     echo "<h2>Actualizar usuario</h2>" . ($updated ? "Usuario actualizado." : "Error al actualizar usuario.");
 
@@ -80,7 +80,7 @@ require_once __DIR__ . '/utils/SecUtils.php';
     echo "<h2>Todos los usuarios</h2><ul>";
     $users = $blackjackDataAccess->getAllUsers();
     foreach ($users as $user) {
-        echo "<li>ID: {$user->getId()}, Usuario: {$user->getUsername()}, Nombre: {$user->getFirstName()} {$user->getLastName()}, Email: {$user->getEmail()}</li>";
+        echo "<li>ID: {$user->getId()}, Usuario: {$user->getUsername()}, Nombre: {$user->getFirstName()} {$user->getLastName()}, Email: {$user->getEmail()}, Saldo: {$user->getBalance()}</li>";
     }
     echo "</ul>";
 
@@ -97,7 +97,7 @@ require_once __DIR__ . '/utils/SecUtils.php';
     $scoreCreated = $blackjackDataAccess->createScore($newScore);
     echo "<h2>Crear scoreo</h2>" . ($scoreCreated ? "Score creado." : "Error al crear score.");
 
-    // 8. Obtener un scoreo por ID
+    // 8. Obtener un score por ID
     echo "<h2>Obtener score por ID</h2>";
     $score = $blackjackDataAccess->getScoreById(1);
     echo $score ? "Scoreo encontrado: {$score->getScore()}" : "Score no encontrado.";
@@ -147,7 +147,7 @@ require_once __DIR__ . '/utils/SecUtils.php';
     // 3. Obtener carta por ID
     echo "<h2>Carta por su id</h2>";
     $card = $blackjackDataAccess->getCardById(1);
-    echo $card ? "Carta encontrada: {$card->getName()} {$card->getValue()} {$card->getSuit()}" : "Usuario no encontrado.";
+    echo $card ? "Carta encontrada: {$card->getName()} {$card->getValue()} {$card->getSuit()}" : "Carta no encontrada.";
 
     ?>
 

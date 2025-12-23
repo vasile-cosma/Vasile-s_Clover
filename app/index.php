@@ -29,9 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!isset($password) || empty($password)) {
         $errors[] = 'ERROR: Debe introducir una contraseña.';
-    } else if (isset($user) && !password_verify($password, $user->getPassword())) {
+    } elseif (isset($user) && !password_verify($password, $user->getPassword())) {
         $errors[] = 'ERROR: La contraseña introducida no es correcta.';
     }
+
+    // Validamos que la contraseña tenga 8 caracteres
+    if (strlen($pwdRegistro) < minCharPwd)
+        array_push($errors, "ERROR: La contraseña debe tener mínimo " . minCharPwd . " caracteres");
+
+
 }
 
 ?>
@@ -47,36 +53,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="./static/css/index.css">
 </head>
 
-<body>
+<body class="bg">
     <?php
 
     if (!empty($errors)) {
-        echo '<ul>';
+        echo '<ul class="list-inline">';
         foreach ($errors as $error) {
-            echo '<li>' . $error . '</li>';
+            echo '<li class="list-inline-item">' . $error . '</li>';
         }
         echo '</ul>';
     }
     ?>
-    <div class="container">
-        <h1 class="fw-bold text-center text-light border-bottom border-2 border-secondary">INICIO DE SESIÓN</h1>
+    <div class="container mt-5 border border-dark rounded-5 p-5 card p-4 bg-dark bg-opacity-75 text-white">
+        <div class="overlay"> </div>
+        <div class="row">
+            <h1 class="fw-bold text-center text-light border-bottom border-2 border-secondary">INICIO DE SESIÓN</h1>
+        </div>
         <form method="post" novalidate>
-            <div class="form-group">
+            <div class="form-group" class="row">
                 <label for="email">Email:</label>
-                <input type="email" name="email" id="email" placeholder="tu_email@ejemplo.com" class="form-control">
+                <input type="email" name="email" id="email" placeholder="tu_email@ejemplo.com"
+                    class="form-control border rounded-pill">
             </div>
             <div class="form-group">
                 <label for="password">Contraseña:</label>
-                <input type="password" name="password" id="password" class="form-control">
+                <input type="password" name="password" id="password" class="form-control border rounded-pill">
             </div>
             <div class="form-group">
                 <label for="recuerdame">Recuérdame</label>
-                <input type="checkbox" name="recuerdame" id="recuerdame" class="form-check-input">
+                <input type="checkbox" name="recuerdame" id="recuerdame" value="true" class="form-check-input">
             </div>
-            <button type=" submit" value="submit" class="btn btn-light">Iniciar sesión</button>
+            <button type=" submit" value="submit"
+                class="control-form btn btn-light border border-dark rounded-pill">Iniciar
+                sesión</button>
         </form>
-        <div>Usuarios registrados: <?= $registeredUsers ?></div>
-        <div>¿No tienes cuenta? <a href="register.php">¡Regístrate!</a></div>
+        <div class="text-center">Usuarios registrados: <?= $registeredUsers ?></div>
+        <div class="text-center lead">¿No tienes cuenta? <a href="register.php" class="btn btn-light">¡Regístrate!</a>
+        </div>
+
     </div>
 
 </body>
