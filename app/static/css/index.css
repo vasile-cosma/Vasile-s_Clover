@@ -42,7 +42,7 @@ body {
     background-color: rgba(216, 185, 13, 0.945) !important;
 }
 
-/* Para Chrome, Edge, Safari */
+/* Para Chrome, Edge, Safari SOLAMENTE*/
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 20px;
@@ -54,36 +54,6 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-    background: rgba(216, 191, 52, 0.945);
-    transform: scale(1.2);
-}
-
-/* Para Firefox */
-input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: rgba(216, 185, 13, 0.945);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #000;
-}
-
-input[type="range"]::-moz-range-thumb:hover {
-    background: rgba(216, 191, 52, 0.945);
-    transform: scale(1.2);
-}
-
-/* Para IE / Edge Legacy */
-input[type="range"]::-ms-thumb {
-    width: 20px;
-    height: 20px;
-    background: rgba(216, 185, 13, 0.945);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #000;
-}
-
-input[type="range"]::-ms-thumb:hover {
     background: rgba(216, 191, 52, 0.945);
     transform: scale(1.2);
 }
