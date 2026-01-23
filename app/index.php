@@ -70,6 +70,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body class="bg mt-0 pt-0 bt-0">
+    <?php
+    // Si hay errores, los mostramos
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($errors)) {
+        echo '<div class="container"> <i class="bi bi-exclamation-triangle-fill me-2"></i>';
+        foreach ($errors as $error) {
+            echo '<div class="alert alert-danger">' . $error . '</div>';
+        }
+        echo '</div>';
+    }
+    ?>
 
     <div
         class="container mt-5 border border-dark rounded-5 p-4 card bg-dark bg-opacity-75 text-white align-items-center shadow">
@@ -113,22 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     <?php
 
-    // Si hay errores, los mostramos
-    if (!empty($errors)) {
-        echo '<div class="container"> <i
-                                        class="bi bi-exclamation-triangle-fill me-2"></i>';
-        foreach ($errors as $error) {
-            echo '<div class="alert alert-danger">' . $error . '</div>';
-        }
-        echo '</div>';
-        /*
-        echo '<ul class="list-group list-group-flush">';
-        foreach ($errors as $error) {
-            echo '<li class="list-group-item list-group-item-light text-center">' . $error . '</li>';
-        }
-        echo '</ul>';
-        */
-    }
+
     ?>
 </body>
 
